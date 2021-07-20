@@ -28,10 +28,6 @@ client.on('ready', () => {
   console.log('Anti Nuke Bot is Online');
 });
 
-client.on('channelDelete', (d) => {
-  d.partial
-})
-
 events.forEach(event => {
   client.on(event, async (obj) => {
     const log = await (obj.guild ? obj.guild.fetchAuditLogs({ limit: 1, type: replace(event) }) : obj.fetchAuditLogs({ limit: 1, type: replace(event) }));
