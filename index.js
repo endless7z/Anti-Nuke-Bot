@@ -12,7 +12,7 @@ function main(entry, history, event) {
   } else if (Date.now() - history[history.length - 1] <= 2500) {
     const user = client.guilds.cache.get(config['guild-id']).members.cache.get(entry.executor.id);
 
-    if (user) user.ban().catch(() => {});
+    if (user && user.bannable) user.ban().catch(() => {});
   } else {
     manager[event][entry.executor.id].push(Date.now());
   };
@@ -25,6 +25,9 @@ function replace(string) {
 };
 
 client.on('ready', () => {
+  const guild = client.guilds.cache.get(config['guild-id']);
+  if (!guild) return console.error(`Invalid Guild ID (${config['guild-id']})`);
+
   console.log('Anti Nuke Bot is Online');
 });
 
