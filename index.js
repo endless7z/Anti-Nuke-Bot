@@ -2,7 +2,7 @@ const config = require('./config.json');
 const { Client, Intents } = require('discord.js');
 
 const client = new Client({ ws: { intents: Intents.ALL } });
-const manager = { channelCreate: {}, channelDelete: {}, roleCreate: {}, roleDelete: {}, guildBanAdd: {}, guildMemberRemove: {} };
+const manager = {};
 
 const events = ['channelCreate', 'channelDelete', 'roleCreate', 'roleDelete', 'guildBanAdd', 'guildMemberRemove'];
 
@@ -29,6 +29,8 @@ client.on('ready', () => {
 });
 
 events.forEach(event => {
+  manager[event] = {};
+ 
   client.on(event, async (obj) => {
     const log = await (obj.guild ? obj.guild.fetchAuditLogs({ limit: 1, type: replace(event) }) : obj.fetchAuditLogs({ limit: 1, type: replace(event) }));
     const entry = log.entries.first();
