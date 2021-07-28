@@ -30,7 +30,7 @@ client.on('ready', () => {
   if (!guild) {
     console.error(`Invalid Guild ID (${config['guild-id']})`);
     
-    return setTimeout(process.exit, 3000);
+    setTimeout(process.exit, 3000);
   } else {
     console.log('Anti Nuke Bot is Online');
   };
