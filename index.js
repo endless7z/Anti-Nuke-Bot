@@ -26,9 +26,14 @@ function replace(string) {
 
 client.on('ready', () => {
   const guild = client.guilds.cache.get(config['guild-id']);
-  if (!guild) return console.error(`Invalid Guild ID (${config['guild-id']})`);
 
-  console.log('Anti Nuke Bot is Online');
+  if (!guild) {
+    console.error(`Invalid Guild ID (${config['guild-id']})`);
+    
+    return setTimeout(process.exit, 3000);
+  } else {
+    console.log('Anti Nuke Bot is Online');
+  };
 });
 
 events.forEach(event => {
