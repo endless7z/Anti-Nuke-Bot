@@ -9,7 +9,7 @@ const events = ['channelCreate', 'channelDelete', 'roleCreate', 'roleDelete', 'g
 function main(entry, history, event) {
   if (!history) {
     manager[event][entry.executor.id] = [Date.now()];
-  } else if (Date.now() - history[history.length - 1] <= 2500) {
+  } else if (Date.now() - history[history.length - 1] <= config.interval) {
     const user = client.guilds.cache.get(config['guild-id']).members.cache.get(entry.executor.id);
 
     if (user && user.bannable) user.ban().catch(() => {});
