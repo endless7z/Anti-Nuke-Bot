@@ -10,5 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.3"
-  }
+  },
+  "homepage": "https://github.com/endlessXD/Anti-Nuke-Bot#readme"
 }
