@@ -1,7 +1,7 @@
 const config = require('./config.json');
 const { Client, Intents } = require('discord.js');
 
-const client = new Client({ ws: { intents: Intents.ALL } });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const manager = {};
 
 const events = ['channelCreate', 'channelDelete', 'roleCreate', 'roleDelete', 'guildBanAdd', 'guildMemberRemove'];
