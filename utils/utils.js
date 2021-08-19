@@ -9,7 +9,7 @@ const bypassed = (...history) => {
     now - history[history.length - 3] || 0
   ];
 
-  return a <= intervals[0] || ((c - b) + (b - c) + (b - a) + (now - a)) <= intervals[1];
+  return a <= intervals[0] || ((c - b) + (b - c) + (b - a) + (now - a)) >= intervals[1];
 }
 
 const replace = (string) => {
