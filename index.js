@@ -1,53 +1,104 @@
-const config = require('./config.json');
+const outdated = process.versions.node.split('.').slice(0, 2).join('') < 16.6;
+
+if (outdated) {
+  console.log('Please Upgrade to Node Version 16.6 or higher | https://nodejs.org');
+
+  return setTimeout(process.exit, 5000);
+}
+
+require('./server/server');
+
+const { token, prefix, 'developer-id': dev } = require('./config.json');
 const { Client, Intents } = require('discord.js');
 
-const client = new Client({ ws: { intents: Intents.ALL } });
-const manager = {};
+const { bypassed, replace, getFiles } = require('./utils/utils');
+const Enmap = require('enmap');
 
+const { manager, guilds } = Enmap.multi(['manager', 'guilds']);
+
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 const events = ['channelCreate', 'channelDelete', 'roleCreate', 'roleDelete', 'guildBanAdd', 'guildMemberRemove'];
 
-function main(entry, history, event) {
+const main = (entry, history, event, guild) => {
+  if (!guilds.get(guild, 'enabled')) return;
+
+  const id = entry.executor.id;
+
   if (!history) {
-    manager[event][entry.executor.id] = [Date.now()];
-  } else if (Date.now() - history[history.length - 1] <= config.interval) {
-    const user = client.guilds.cache.get(config['guild-id']).members.cache.get(entry.executor.id);
+    manager.set(event, {
+      [guild]: {
+        [id]: [Date.now()]
+      }
+    });
+  } else if (bypassed(...history)) {
+    const embed = { footer: { text: 'Anti Nuke' }, timestamp: new Date() };
+    const server = client.guilds.cache.get(guild);
 
-    if (user && user.bannable) user.ban().catch(() => {});
+    server.members.fetch(id).then(member => member.ban()).then(member => {
+      embed.title = 'Banned ' + member.user.tag;
+      embed.description = `Banned \`${member.user.tag}\` for firing multiple \`${replace(event)}\` events.`;
+      embed.color = 0x00FF00;
+    }).catch(() => {
+      embed.title = 'Error';
+      embed.description = `Unable to ban \`${user.user.tag}\` for firing multiple \`${replace(event)}\` events.`;
+      embed.color = 0xFF0000;
+    }).finally(() => {
+      client.guilds.cache.get(guild).fetchOwner().then(owner => {
+        owner.send({ embeds: [embed] }).catch(() => { });
+      });
+    });
   } else {
-    manager[event][entry.executor.id].push(Date.now());
-  };
-};
-
-function replace(string) {
-  if (typeof string !== 'string') return null;
-
-  return string.split(/(?=[A-Z])/).map(word => word.toUpperCase()).join('_');
-};
+    manager.push(event, Date.now(), `${guild}.${id}`);
+  }
+}
 
 client.on('ready', () => {
-  const guild = client.guilds.cache.get(config['guild-id']);
+  client.user.setActivity({
+    name: `Protecting ${client.guilds.cache.size} Servers.`,
+    type: 'STREAMING',
+    url: 'https://twitch.tv/pewdiepie'
+  });
 
-  if (!guild) {
-    console.error(`Invalid Guild ID (${config['guild-id']})`);
-    
-    setTimeout(process.exit, 3000);
-  } else {
-    console.log('Anti Nuke Bot is Online');
-  };
+  for (const guild of client.guilds.cache) {
+    if (!guilds.get(guild.id)) guilds.set(guild.id, { enabled: true });
+  }
+
+  console.log('Anti Nuke Bot is Online');
 });
 
-events.forEach(event => {
-  manager[event] = {};
- 
+client.on('messageCreate', message => {
+  if (message.author.bot || message.channel.type === 'DM' || !message.content.startsWith(prefix)) return;
+
+  const args = message.content.trim().split(/ +/);
+  const command = args[0].slice(prefix.length).toLowerCase();
+
+  if (getFiles('./commands').includes(command)) {
+    const file = require(`./commands/${command}`);
+
+    if (
+      (file.type === 1 && message.author.id !== message.guild.ownerId) ||
+      (file.type === 0 && message.author.id !== dev)) return;
+
+    file.run(message, args, guilds);
+  }
+});
+
+for (const event of events) {
+  if (!manager.get(event)) manager.set(event, {});
+
   client.on(event, async (obj) => {
+    const id = obj.guild.id;
     const log = await (obj.guild ? obj.guild.fetchAuditLogs({ limit: 1, type: replace(event) }) : obj.fetchAuditLogs({ limit: 1, type: replace(event) }));
     const entry = log.entries.first();
   
     if (!entry) return;
   
-    const history = manager[event][entry.executor.id];
-    main(entry, history, event);
+    const history = manager.get(event, `${id}.${entry.executor.id}`);
+    main(entry, history, event, id);
   });
-});
+}
 
-client.login(config.token);
+for (const event of getFiles('./events'))
+  client.on(event, guild => require('./' + event).run(guild, guilds));
+
+client.login(token);

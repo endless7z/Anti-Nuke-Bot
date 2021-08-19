@@ -1,5 +1,7 @@
 {
     "token": "",
-    "interval": 2500,
-    "guild-id": ""
+    "intervals": [2500, 10000],
+    "developer-id": "",
+    "prefix": "=",
+    "port": 8000
 }
