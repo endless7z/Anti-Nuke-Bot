@@ -1,6 +1,6 @@
 {
     "token": "",
-    "intervals": [2500, 10000],
+    "intervals": [2500, 15000],
     "developer-id": "",
     "prefix": "=",
     "port": 8000

@@ -11,8 +11,8 @@ A discord bot to protect your servers.
     "token": "",
 
     // 2 events fired in under 2500 milliseconds = ban.
-    // 4 events fired in under 10000 milliseconds = ban.
-    "intervals": [2500, 10000],
+    // 4 events fired in under 15000 milliseconds = ban.
+    "intervals": [2500, 15000],
 
     // Your user ID
     "developer-id": "",
