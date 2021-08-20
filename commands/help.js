@@ -23,10 +23,8 @@ module.exports = {
       if (command === 'help') return;
 
       const file = require('./' + command);
-      const name = file.type === 0 ? 'Developer' : 'Owner';
 
       return {
-        name: name + ' Commands',
         value: `\`${capitalize(command)}\` - ${file.description}`,
         type: file.type
       }
