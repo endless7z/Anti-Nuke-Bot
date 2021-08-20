@@ -1,5 +1,5 @@
 # Anti Nuke Bot
-A discord bot to protect your servers. You can just invite it [here](https://discord.com/oauth2/authorize?client_id=801222160407592961&scope=bot&permissions=8)
+A discord bot to protect your servers. You can just invite it [here](https://discord.com/oauth2/authorize?client_id=801222160407592961&scope=bot&permissions=8).
 # Requirements
 - [`node.js`](https://nodejs.org) v16.6
 # Setup
