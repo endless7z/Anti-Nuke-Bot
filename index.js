@@ -1,4 +1,4 @@
-const outdated = process.versions.node.split('.').slice(0, 2).join('') < 16.6;
+const outdated = process.versions.node.split('.').slice(0, 2).join('') >= 16.6;
 
 if (outdated) {
   console.log('Please Upgrade to Node Version 16.6 or higher | https://nodejs.org');
