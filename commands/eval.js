@@ -10,6 +10,8 @@ module.exports = {
     const clean = (string) => {
       if (typeof string !== 'string')
         string = require('util').inspect(string);
+      
+      if (string.length > 2000) return null;
 
       const space = String.fromCharCode(8203);
 
