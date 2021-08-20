@@ -21,7 +21,7 @@ module.exports = {
       embed.title = 'Eval';
       embed.color = 0x00FF00;
 
-      embed.description = `\`\`\`${clean(str)}\`\`\``;
+      embed.description = `\`\`\`js\n${clean(str)}\`\`\``;
     } catch (err) {
       embed.title = 'Error';
       embed.color = 0xFF0000;
