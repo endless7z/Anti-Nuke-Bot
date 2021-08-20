@@ -59,9 +59,9 @@ client.on('ready', () => {
     url: 'https://twitch.tv/pewdiepie'
   });
 
-  for (const guild of client.guilds.cache) {
+  client.guilds.cache.forEach(guild => {
     if (!guilds.get(guild.id)) guilds.set(guild.id, { enabled: true });
-  }
+  });
 
   console.log('Anti Nuke Bot is Online');
 });
