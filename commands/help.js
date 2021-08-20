@@ -1,4 +1,4 @@
-const { getFiles } = require('../utils');
+const { getFiles } = require('../utils/utils');
 const { prefix } = require('../config.json');
 
 module.exports = {
