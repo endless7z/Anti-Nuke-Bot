@@ -8,9 +8,12 @@ module.exports = {
     const embed = { footer: { text: 'Anti Nuke' }, timestamp: new Date() };
 
     const clean = (string) => {
+      if (typeof string !== 'string')
+        string = require('util').inspect(string);
+
       const space = String.fromCharCode(8203);
 
-      return String(string)
+      return string
         .replace(/`/g, '`' + space)
         .replace(/@/g, '@' + space);
     }
