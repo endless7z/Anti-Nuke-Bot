@@ -34,7 +34,7 @@ module.exports = {
     const owner = data.filter(command => command?.type === 1);
 
     const commands = [owner, developer];
-    const types = ['Developer', 'Owner'];
+    const types = ['Owner', 'Developer'];
 
     for (const index in commands) {
       const str = commands[index].map(command => command.value).join('\n');
