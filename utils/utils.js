@@ -4,12 +4,12 @@ const fs = require('fs');
 const bypassed = (...history) => {
   const now = Date.now();
   const [a, b, c] = [
-    now - history[history.length - 1] || 0,
-    now - history[history.length - 2] || 0,
-    now - history[history.length - 3] || 0
+    history[history.length - 1] || 0,
+    history[history.length - 2] || 0,
+    history[history.length - 3] || 0
   ];
 
-  return a <= intervals[0] || ((c - b) + (b - c) + (b - a) + (now - a)) >= intervals[1];
+  return a <= intervals[0] || ((b - c) + (a - b) + (now - a)) >= intervals[1];
 }
 
 const replace = (string) => {
