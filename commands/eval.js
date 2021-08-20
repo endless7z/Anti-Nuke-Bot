@@ -4,13 +4,13 @@ module.exports = {
   run(message, args) {
     if (!args.length) return;
 
-    const code = args.join(' ');
+    const code = args.slice(1).join(' ');
     const embed = { footer: { text: 'Anti Nuke' }, timestamp: new Date() };
 
     const clean = (string) => {
       const space = String.fromCharCode(8203);
 
-      return string
+      return String(string)
         .replace(/`/g, '`' + space)
         .replace(/@/g, '@' + space);
     }
