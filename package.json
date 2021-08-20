@@ -1,6 +1,6 @@
 {
   "name": "anti-nuke-bot",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "protect discord servers",
   "main": "index.js",
   "scripts": {
