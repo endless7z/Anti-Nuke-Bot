@@ -1,7 +1,7 @@
 module.exports = {
   run(guild, guilds) {
-    if (!guilds.get(guild.id)) guilds.set(guild.id, { enabled: true });
+    if (guilds.get(guild.id)) guilds.remove(guild.id);
 
-    console.log(`[JOIN] Joined ${guild.name}`);
+    console.log(`[LEAVE] Left ${guild.name}`);
   }
 }
