@@ -16,7 +16,7 @@ const Enmap = require('enmap');
 
 const { manager, guilds } = Enmap.multi(['manager', 'guilds']);
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_BANS] });
 const events = ['channelCreate', 'channelDelete', 'roleCreate', 'roleDelete', 'guildBanAdd', 'guildMemberRemove'];
 
 const main = (entry, history, event, guild) => {
