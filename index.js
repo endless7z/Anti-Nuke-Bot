@@ -33,7 +33,7 @@ const main = (entry, history, event, guild) => {
   } else if (bypassed(...history)) {
     const embed = { footer: { text: 'Anti Nuke' }, timestamp: new Date() };
     const server = client.guilds.cache.get(guild);
-    const member = server.members.fetch(id);
+    const member = await server.members.fetch(id);
 
     try {
       await member.ban();
