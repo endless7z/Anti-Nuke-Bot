@@ -8,16 +8,17 @@ if (outdated) {
 
 require('./server/server');
 
-const { token, prefix, 'developer-id': dev } = require('./config.json');
-const { Client, Intents } = require('discord.js');
-
-const { bypassed, replace, getFiles } = require('./utils/utils');
+const { Client } = require('discord.js');
 const Enmap = require('enmap');
 
-const { manager, guilds } = Enmap.multi(['manager', 'guilds']);
+const { bypassed, replace, getFiles } = require('./utils/utils');
+const { token, prefix, 'developer-id': dev } = require('./config.json');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MEMBERS] });
+const { manager, guilds } = Enmap.multi(['manager', 'guilds']);
 const events = ['channelCreate', 'channelDelete', 'roleCreate', 'roleDelete', 'guildBanAdd', 'guildMemberRemove'];
+
+// GUILD, GUILD_BANS, GUILD_MESSAGES, GUILD_MEMBERS
+const client = new Client({ intents: [1 << 0, 1 << 1, 1 << 2, 1 << 9] });
 
 const main = (entry, history, event, guild) => {
   if (!guilds.get(guild, 'enabled')) return;
