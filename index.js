@@ -34,19 +34,21 @@ const main = (entry, history, event, guild) => {
     const embed = { footer: { text: 'Anti Nuke' }, timestamp: new Date() };
     const server = client.guilds.cache.get(guild);
 
-    server.members.fetch(id).then(member => member.ban()).then(member => {
+    try {
+      await member.ban();
+
       embed.title = 'Banned ' + member.user.tag;
       embed.description = `Banned \`${member.user.tag}\` for firing multiple \`${replace(event)}\` events.`;
       embed.color = 0x00FF00;
-    }).catch(() => {
+    } catch {
       embed.title = 'Error';
-      embed.description = `Unable to ban \`${user.user.tag}\` for firing multiple \`${replace(event)}\` events.`;
+      embed.description = `Unable to ban \`${member.user.tag}\` for firing multiple \`${replace(event)}\` events.`;
       embed.color = 0xFF0000;
-    }).finally(() => {
+    } finally {
       client.guilds.cache.get(guild).fetchOwner().then(owner => {
         owner.send({ embeds: [embed] }).catch(() => { });
       });
-    });
+    }
   } else {
     manager.push(event, Date.now(), `${guild}.${id}`);
   }
