@@ -20,7 +20,7 @@ const events = ['channelCreate', 'channelDelete', 'roleCreate', 'roleDelete', 'g
 // GUILD, GUILD_BANS, GUILD_MESSAGES, GUILD_MEMBERS
 const client = new Client({ intents: [1 << 0, 1 << 1, 1 << 2, 1 << 9] });
 
-const main = (entry, history, event, guild) => {
+const main = async (entry, history, event, guild) => {
   if (!guilds.get(guild, 'enabled')) return;
 
   const id = entry.executor.id;
