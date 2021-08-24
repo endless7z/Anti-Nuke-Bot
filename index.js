@@ -88,7 +88,7 @@ client.on('messageCreate', message => {
 });
 
 for (const event of events) {
-  if (!manager.get(event)) manager.set(event, {});
+  manager.ensure(event, {});
 
   client.on(event, async (obj) => {
     const id = obj.guild.id;
