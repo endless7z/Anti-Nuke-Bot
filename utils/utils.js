@@ -3,13 +3,12 @@ const fs = require('fs');
 
 const bypassed = (...history) => {
   const now = Date.now();
-  const [a, b, c] = [
+  const [a, b] = [
     history[history.length - 1] || 0,
-    history[history.length - 2] || 0,
     history[history.length - 3] || 0
   ];
 
-  return now - a <= intervals[0] || ((b - c) + (a - b) + (now - a)) <= intervals[1];
+  return now - a <= intervals[0] || now - b <= intervals[1];
 }
 
 const replace = (string) => {
